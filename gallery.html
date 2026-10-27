@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gallery - Red Moon Final Swipe</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+  body { margin:0; background:#000; overflow-x:hidden; }
+.red-moon-bg {
+    position: fixed; inset:0; width:100%; height:100%; z-index:-3;
+    background-image: url('media/red-moon.jpeg');
+    background-size: cover; background-position: center;
+    animation: bgMove 30s ease-in-out infinite alternate;
+  }
+  @keyframes bgMove { 0%{transform:scale(1)} 100%{transform:scale(1.12)} }
+.overlay { position:fixed; inset:0; z-index:-2; background:rgba(0,0,0,0.25); }
+.sec { max-width:400px; margin:0 auto; padding:16px; position:relative; z-index:2; padding-bottom:110px; }
+.title { text-align:center; font-size:24px; font-weight:800; color:#fff; }
+.title span { color:#ff0033; text-shadow:0 0 12px #ff0033; }
+.hint { text-align:center; color:#ffcccc; font-size:8px; letter-spacing:1px; margin:8px 0; }
+.wrap3d { width:100%; height:340px; display:flex; justify-content:center; align-items:center; perspective:900px; margin:18px 0; }
+.box3d { position:relative; width:85px; height:85px; transform-style:preserve-3d; animation:rot 14s linear infinite; }
+  @keyframes rot { from{transform:rotateX(0deg) rotateY(15deg)} to{transform:rotateX(360deg) rotateY(15deg)} }
+.box3d span { position:absolute; inset:0; transform:rotateX(calc(var(--i)*45deg)) translateZ(125px); cursor:pointer; }
+.box3d img { width:100%; height:100%; object-fit:cover; border:2px solid #ff0033; border-radius:8px; box-shadow:0 0 18px rgba(255,0,51,0.6); }
+
+  /* SWIPE MAGANDA */
+  #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; justify-content:center; align-items:center; flex-direction:column; }
+  #lightbox.active{ display:flex; }
+.lb-wrap { width:90%; max-width:340px; height:60vh; display:flex; justify-content:center; align-items:center; position:relative; touch-action:pan-y; cursor:grab; overflow:visible; }
+.lb-wrap:active{ cursor:grabbing; }
+  #lbImg { max-width:100%; max-height:100%; border:2px solid #ff0033; border-radius:12px; box-shadow:0 0 50px rgba(255,0,51,0.4); will-change:transform; transition:transform 0.35s cubic-bezier(0.25,0.8,0.25,1), opacity 0.3s; user-select:none; -webkit-user-drag:none; }
+  #lbImg.dragging{ transition:none!important; }
+  #lbImg.next-enter{ animation:nextEnter 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  @keyframes nextEnter{ from{transform:translateX(80%) scale(0.85) rotateY(20deg); opacity:0} to{transform:translateX(0) scale(1) rotateY(0); opacity:1} }
+  #lbImg.prev-enter{ animation:prevEnter 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  @keyframes prevEnter{ from{transform:translateX(-80%) scale(0.85) rotateY(-20deg); opacity:0} to{transform:translateX(0) scale(1) rotateY(0); opacity:1} }
+
+.close { position:absolute; top:14px; right:14px; width:40px; height:40px; background:rgba(255,0,51,0.3); display:grid; place-items:center; color:#ff0033; border-radius:50%; border:1px solid rgba(255,0,51,0.4); cursor:pointer; z-index:10; }
+.dots{ display:flex; gap:6px; margin-top:14px; }.dots b{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.3); transition:.3s }.dots b.on{ background:#ff0033; width:20px; box-shadow:0 0 8px #ff0033; border-radius:10px; }
+.navBtn{ position:absolute; top:50%; transform:translateY(-50%); width:36px; height:36px; background:rgba(255,0,51,0.25); border:1px solid rgba(255,0,51,0.4); display:grid; place-items:center; color:#ff0033; border-radius:50%; font-size:14px; cursor:pointer; z-index:10; }.navBtn.l{left:8px}.navBtn.r{right:8px}
+.music-float{ position:absolute; top:14px; left:14px; background:rgba(255,0,51,0.3); border:1px solid rgba(255,0,51,0.4); color:#ff0033; padding:7px 12px; border-radius:20px; font-size:10px; font-weight:800; cursor:pointer; z-index:10; }
+.music-float.playing{ animation:pulseMusic 1s infinite; background:rgba(255,0,51,0.5); }
+  @keyframes pulseMusic{ 0%,100%{box-shadow:0 0 0 0 rgba(255,0,51,0.4)} 50%{box-shadow:0 0 0 10px rgba(255,0,51,0)} }
+.bottom-wrap{ position:fixed; bottom:10px; left:50%; transform:translateX(-50%); z-index:9999; width:92%; max-width:360px; }
+.bottom-pill{ width:100%; height:58px; background:rgba(14,14,16,0.95); border:1px solid rgba(255,0,51,0.3); border-radius:30px; display:flex; justify-content:space-around; align-items:center; }
+.bottom-pill a{ display:flex; flex-direction:column; align-items:center; gap:3px; text-decoration:none; color:#ffffff66; font-size:7px; font-weight:800; width:48px; }
+.bottom-pill a svg{ width:20px; height:20px; stroke:#ffffff99; fill:none; stroke-width:1.7; }
+.bottom-pill a.active{ color:#ff2d55; }.bottom-pill a.active svg{ stroke:#ff2d55; filter:drop-shadow(0 0 6px #ff2d55); }
+</style>
+</head>
+<body>
+
+<div class="red-moon-bg"></div>
+<div class="overlay"></div>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="media/music.mp3" type="audio/mpeg" />
+  <source src="media/https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+</audio>
+
+<nav style="background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,0,51,.2)">
+<div class="logo">MY<b>.WEBSITE</b></div>
+<button class="nav-logout" onclick="localStorage.removeItem('blue_logged');location.href='login.html'"><span>EXIT</span></button>
+</nav>
+
+<div class="sec">
+<h2 class="title">My <span>Gallery</span></h2>
+<p class="hint">🔴 top to the picture </p>
+<div class="wrap3d"><div class="box3d">
+<span style="--i:0"><img src="media/jet1.jpeg" onerror="media/this.src='https://picsum.photos/seed/1/400'"></span>
+<span style="--i:1"><img src="media/jet2.jpeg" onerror="media/this.src='https://picsum.photos/seed/2/400'"></span>
+<span style="--i:2"><img src="media/jet3.jpeg" onerror="media/this.src='https://picsum.photos/seed/3/400'"></span>
+<span style="--i:3"><img src="media/jet4.jpeg" onerror="media/this.src='https://picsum.photos/seed/4/400'"></span>
+<span style="--i:4"><img src="media/jet5.jpeg" onerror="media/this.src='https://picsum.photos/seed/5/400'"></span>
+<span style="--i:5"><img src="media/jet6.jpeg" onerror="media/this.src='https://picsum.photos/seed/6/400'"></span>
+<span style="--i:6"><img src="media/jet7.jpeg" onerror="media/this.src='https://picsum.photos/seed/7/400'"></span>
+<span style="--i:7"><img src="media/jet8.jpeg" onerror="media/this.src='https://picsum.photos/seed/8/400'"></span>
+</div></div>
+</div>
+
+<div id="lightbox">
+<div class="music-float" id="musicBtn" onclick="toggleMusic()">🎵 MUSIC</div>
+<div class="close" onclick="closeLB()">✕</div>
+<div class="navBtn l" onclick="nextPic(-1)">◀</div>
+<div class="navBtn r" onclick="nextPic(1)">▶</div>
+<div class="lb-wrap" id="lbWrap"><img id="lbImg"></div>
+<div class="dots" id="lbDots"></div>
+<p style="color:#fff6;font-size:8px;margin-top:10px" id="counter">1 / 8</p>
+</div>
+
+<div class="bottom-wrap"><div class="bottom-pill"><a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 10L12 3l9 7v10H15v-6H9v6H3z"/></svg>HOME</a><a class="active" href="gallery.html"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>PHOTO</a><a href="skills.html"><svg viewBox="0 0 24 24"><path d="M12 2l2.5 5.5L21 12l-6.5 4.5L12 22l-2.5-5.5L3 12l6.5-4.5L12 2z"/></svg>SKILLS</a><a href="goals.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2.5"/></svg>GOALS</a><a href="funfacts.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M8 13c1.2 1.5 3.8 1.5 5 0"/><circle cx="9" cy="9" r=".8" fill="white" stroke="none"/><circle cx="15" cy="9" r=".8" fill="white" stroke="none"/></svg>FUN</a><a href="contact.html"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 19c0-2.5 2.2-4.5 6-4.5s6 2 6 4.5"/></svg>CONTACT</a></div></div>
+
+<script>
+ const localImgs=["media/jet1.jpeg","media/jet2.jpeg","media/jet3.jpeg","media/jet4.jpeg","media/jet5.jpeg","media/jet6.jpeg","media/jet7.jpeg","media/jet8.jpeg"];
+ const fallback=["https://picsum.photos/seed/1/600","https://picsum.photos/seed/2/600","https://picsum.photos/seed/3/600","https://picsum.photos/seed/4/600","https://picsum.photos/seed/5/600","https://picsum.photos/seed/6/600","https://picsum.photos/seed/7/600","https://picsum.photos/seed/8/600"];
+ let cur=0;
+ const bgMusic=document.getElementById('bgMusic');
+ const musicBtn=document.getElementById('musicBtn');
+ const lbImg=document.getElementById('lbImg');
+ const lbWrap=document.getElementById('lbWrap');
+ let isPlaying=false;
+ let startX=0, isDragging=false, diff=0;
+
+ document.querySelectorAll('.box3d span').forEach((sp,idx)=>{ sp.addEventListener('click',()=>openLB(idx)); });
+
+ function playMusic(){ bgMusic.volume=0.6; bgMusic.play().then(()=>{ isPlaying=true; musicBtn.innerText='🎵 PLAYING'; musicBtn.classList.add('playing'); }).catch(()=>{}); }
+ function toggleMusic(){ if(isPlaying){ bgMusic.pause(); musicBtn.innerText='🔇 MUTED'; musicBtn.classList.remove('playing'); isPlaying=false; } else{ playMusic(); } }
+ function openLB(i){ cur=i; lbImg.src=localImgs[i]; lbImg.onerror=()=>lbImg.src=fallback[i]; document.getElementById('lightbox').classList.add('active'); updateLB(); playMusic(); }
+ function closeLB(){ document.getElementById('lightbox').classList.remove('active'); bgMusic.pause(); bgMusic.currentTime=0; isPlaying=false; musicBtn.innerText='🎵 MUSIC'; musicBtn.classList.remove('playing'); lbImg.style.transform=''; lbImg.style.opacity=''; }
+ function updateLB(){ lbImg.src=localImgs[cur]; lbImg.onerror=()=>lbImg.src=fallback[cur]; document.getElementById('counter').innerText=(cur+1)+' / 8'; let dots=document.getElementById('lbDots'); dots.innerHTML=''; for(let k=0;k<8;k++){ let b=document.createElement('b'); if(k===cur) b.classList.add('on'); dots.appendChild(b); } }
+
+ // MAGANDANG SWIPE
+ function onStart(x){ isDragging=true; startX=x; lbImg.classList.add('dragging'); }
+ function onMove(x){
+   if(!isDragging) return;
+   diff=x-startX;
+   let rotate=diff*0.08;
+   let scale=1-Math.min(Math.abs(diff)/800,0.15);
+   lbImg.style.transform=`translateX(${diff}px) rotateY(${rotate}deg) scale(${scale})`;
+   lbImg.style.opacity=1-Math.min(Math.abs(diff)/400,0.4);
+ }
+ function onEnd(){
+   if(!isDragging) return;
+   isDragging=false; lbImg.classList.remove('dragging');
+   if(Math.abs(diff)>70){ if(diff<0) goNext(1); else goNext(-1); }
+   else{ lbImg.style.transform=`translateX(0) rotateY(0) scale(1)`; lbImg.style.opacity=`1`; }
+   diff=0;
+ }
+ function goNext(dir){
+   lbImg.style.transition=`transform 0.32s ease, opacity 0.32s ease`;
+   lbImg.style.transform=`translateX(${dir>0? -120:120}%) rotateY(${dir>0? -30:30}deg) scale(0.8)`;
+   lbImg.style.opacity=`0`;
+   setTimeout(()=>{
+     cur+=dir; if(cur<0)cur=7; if(cur>7)cur=0; updateLB();
+     lbImg.style.transition=`none`;
+     lbImg.style.transform=`translateX(${dir>0? 120:-120}%) rotateY(${dir>0? 30:-30}deg) scale(0.8)`;
+     lbImg.style.opacity=`0`;
+     requestAnimationFrame(()=>{ requestAnimationFrame(()=>{
+       lbImg.style.transition=`transform 0.45s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s`;
+       lbImg.classList.remove('next-enter','prev-enter'); void lbImg.offsetWidth;
+       lbImg.classList.add(dir>0?'next-enter':'prev-enter');
+       lbImg.style.transform=``; lbImg.style.opacity=``;
+     }); });
+     setTimeout(()=>{ lbImg.classList.remove('next-enter','prev-enter'); lbImg.style.transition=``; },500);
+   },280);
+ }
+ function nextPic(dir){ goNext(dir); }
+
+ lbWrap.addEventListener('touchstart', e=>{ onStart(e.touches[0].clientX); }, {passive:true});
+ lbWrap.addEventListener('touchmove', e=>{ onMove(e.touches[0].clientX); }, {passive:true});
+ lbWrap.addEventListener('touchend', onEnd);
+ lbWrap.addEventListener('mousedown', e=>{ onStart(e.clientX); });
+ window.addEventListener('mousemove', e=>{ onMove(e.clientX); });
+ window.addEventListener('mouseup', onEnd);
+ window.addEventListener('keydown', e=>{ if(e.key==='ArrowLeft') goNext(-1); if(e.key==='ArrowRight') goNext(1); if(e.key==='Escape') closeLB(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jetric Obrique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; font-family: 'Inter', sans-serif; padding-bottom: 100px; overflow-x: hidden; color: #fff; }
+
+    /* BACKGROUND */
+  .bg-video { position: fixed; inset: 0; z-index: -3; width: 100%; height: 100%; object-fit: cover; filter: brightness(1.15) contrast(1.1) saturate(1.2); }
+  .bg-overlay { position: fixed; inset: 0; z-index: -2; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.75) 100%); pointer-events: none; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -4; background: url('media/itachi-bg.jpeg') no-repeat center top / cover; filter: brightness(0.9); }
+
+    /* NAV */
+    nav { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,0,51,0.3); padding: 13px 18px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Space Grotesk'; font-weight: 800; font-size: 14px; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+  .logo b { color: #ff0033; text-shadow: 0 0 10px #ff0033; }
+  .nav-logout { background: rgba(255,0,51,0.12); border: 1.5px solid #ff0033; color: #ff0033; padding: 6px 15px; border-radius: 20px; font-size: 9px; font-weight: 900; cursor: pointer; }
+
+  .sec { max-width: 400px; margin: 0 auto; padding: 18px; position: relative; z-index: 2; }
+
+    /* UNIVERSITY CARD */
+  .hero-ua { background: rgba(0,0,0,0.55); border: 1px solid rgba(255,0,51,0.25); border-left: 4px solid #ff0033; padding: 16px; border-radius: 16px; backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  .hero-ua-top { display: flex; align-items: center; gap: 14px; }
+
+    /* UA LOGO - GUMAGALAW NA ANGAS */
+  .ua-logo {
+      width: 56px; height: 56px;
+      background: #fff;
+      border-radius: 50%;
+      border: 2px solid #ff0033;
+      padding: 3px;
+      position: relative;
+      animation: uaFloat 3s ease-in-out infinite, uaGlow 2s ease-in-out infinite;
+      box-shadow: 0 0 18px rgba(255,0,51,0.5);
+    }
+  .ua-logo::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: #ff0033;
+      border-right-color: #ffd700;
+      animation: uaSpin 3s linear infinite;
+    }
+  .ua-logo::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255,0,51,0.4);
+      animation: uaSpin 6s linear infinite reverse;
+    }
+  .ua-logo img {
+      width: 100%; height: 100%;
+      object-fit: contain; border-radius: 50%;
+      animation: uaImgSpin 8s ease-in-out infinite;
+    }
+    @keyframes uaFloat { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-4px) scale(1.05)} }
+    @keyframes uaGlow { 0%,100%{box-shadow:0 0 18px rgba(255,0,51,0.5)} 50%{box-shadow:0 0 28px rgba(255,0,51,0.8), 0 0 40px rgba(255,0,51,0.3)} }
+    @keyframes uaSpin { to{transform:rotate(360deg)} }
+    @keyframes uaImgSpin { 0%,100%{transform:rotateY(0)} 25%{transform:rotateY(15deg)} 75%{transform:rotateY(-15deg)} }
+
+  .ua-info b { font-family: 'Space Grotesk'; font-size: 11px; color: #fff; }
+  .ua-info span { font-size: 7.5px; color: #ffffffcc; margin-top: 3px; display: block; }
+  .ua-info i { font-size: 6px; font-style: normal; font-weight: 800; color: #ff2d55; background: rgba(255,0,51,0.15); border: 1px solid rgba(255,0,51,0.3); padding: 4px 10px; border-radius: 20px; margin-top: 7px; display: inline-block; }
+
+    /* PROFILE */
+  .pic-wrap { position: relative; width: 190px; height: 190px; margin: 28px auto; }
+  .ring1 { position: absolute; inset: -8px; border: 2px solid transparent; border-top-color: #ff0033; border-right-color: #ffd700; border-radius: 50%; animation: spin 3s linear infinite; }
+  .ring2 { position: absolute; inset: -16px; border: 1px dashed rgba(255,0,51,0.45); border-radius: 50%; animation: spin 8s linear infinite reverse; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  .pic-circle { position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; border: 3px solid #111; box-shadow: 0 0 0 2px #ff0033, 0 12px 40px rgba(0,0,0,0.8); }
+  .pic-circle img { width: 100%; height: 100%; object-fit: cover; }
+  .badge-jo { position: absolute; bottom: 4px; right: 4px; width: 46px; height: 46px; background: radial-gradient(circle at 30% 30%, #ff2d55, #000); border-radius: 50%; display: grid; place-items: center; font-weight: 900; color: #fff; font-size: 16px; border: 2.5px solid #ff0033; box-shadow: 0 0 15px rgba(255,0,51,0.6); }
+  .badge-year { position: absolute; top: 12px; left: -10px; background: #ff0033; color: #fff; font-size: 7px; font-weight: 900; padding: 6px 12px; transform: skewX(-12deg) rotate(-8deg); z-index: 3; }
+
+  .name-wrap { text-align: center; margin: 16px 0 8px; }
+  .name-wrap h1 { font-family: 'Space Grotesk'; font-size: 32px; font-weight: 800; line-height: 1; text-shadow: 0 3px 20px rgba(255,0,51,0.6); }
+  .name-wrap h1 span { background: linear-gradient(90deg,#ff0033,#ff1a1a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .typed { text-align: center; font-size: 11px; color: #ff2d55; font-weight: 600; letter-spacing: 1.5px; min-height: 16px; }
+  .typed::after { content: '|'; animation: blink 0.8s infinite; margin-left: 3px; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+  .chips { display: flex; justify-content: center; gap: 7px; flex-wrap: wrap; margin: 16px 0; }
+  .chip { font-size: 7px; font-weight: 800; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.6); color: #ffffffaa; backdrop-filter: blur(6px); }
+  .chip.red { border-color: rgba(255,0,51,0.4); background: rgba(255,0,51,0.18); color: #ff6b8a; }
+
+  .btns { display: flex; gap: 10px; margin: 20px 0; }
+  .btn { flex: 1; padding: 14px; font-weight: 900; font-size: 10px; border-radius: 12px; transform: skewX(-6deg); cursor: pointer; }
+  .btn span { display: inline-block; transform: skewX(6deg); }
+  .btn-gold { background: linear-gradient(90deg,#ff0033,#cc001f); border: none; color: #fff; box-shadow: 0 0 25px rgba(255,0,51,0.45); }
+  .btn-line { background: rgba(0,0,0,0.5); border: 1.5px solid #ff0033; color: #ff0033; }
+
+  .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 18px 0; }
+  .stat { text-align: center; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.08); padding: 14px 4px; border-radius: 14px; backdrop-filter: blur(8px); }
+  .stat b { font-size: 18px; color: #ff2d55; display: block; font-family: 'Space Grotesk'; }
+  .stat span { font-size: 6.5px; color: #ffffff88; font-weight: 800; letter-spacing: 1px; margin-top: 2px; display: block; }
+
+  .about { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,0,51,0.22); border-left: 3px solid #ff0033; padding: 18px; margin: 16px 0; border-radius: 14px; backdrop-filter: blur(12px); cursor: pointer; }
+  .about.active { transform: scale(1.02); background: rgba(20,0,5,0.85); box-shadow: 0 0 28px rgba(255,0,51,0.35); }
+  .about-text { font-size: 10px; color: #ffffffaa; line-height: 1.7; margin-top: 10px; }
+  .about-more { max-height: 0; opacity: 0; overflow: hidden; transition: 0.45s ease; }
+  .about.active.about-more { max-height: 200px; opacity: 1; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,0,51,0.2); }
+  .row { display: flex; justify-content: space-between; font-size: 8px; color: #ffffff99; margin-bottom: 5px; }
+  .row b { color: #ff2d55; }
+
+  .bottom { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 92%; max-width: 380px; }
+  .pill { width: 100%; height: 64px; background: rgba(12,0,0,0.9); border: 1px solid rgba(255,0,51,0.35); border-radius: 32px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(20px); }
+  .pill a { display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #ffffff80; font-size: 7px; font-weight: 800; width: 50px; }
+  .pill a svg { width: 22px; height: 22px; stroke: #ffffff70; fill: none; stroke-width: 1.7; }
+  .pill a.active { color: #ff2d55; }
+  .pill a.active svg { stroke: #ff2d55; }
+  </style>
+</head>
+<body>
+
+  <video class="bg-video" autoplay muted loop playsinline poster="media/itachi-bg.jpeg">
+    <source src="media/itachi-bg.mp4" type="video/mp4">
+  </video>
+  <div class="bg-overlay"></div>
+
+  <nav>
+    <div class="logo">MY<b>.WEBSITE</b></div>
+    <button class="nav-logout" onclick="localStorage.clear(); location.href='login.html'"><span>LOGOUT</span></button>
+  </nav>
+
+  <div class="sec">
+
+    <div class="hero-ua">
+      <div class="hero-ua-top">
+        <!-- UA LOGO GUMAGALAW NA -->
+        <div class="ua-logo"><img src="media/logo.jpeg" alt="UA Logo"></div>
+        <div class="ua-info">
+          <b>UNIVERSITY OF ANTIQUE</b>
+          <span>TLMC - TARIO LIM MEMORIAL CAMPUS</span>
+          <i>◍ RED ITACHI • ANIME ◍</i>
+        </div>
+      </div>
+    </div>
+
+    <div class="pic-wrap">
+      <div class="badge-year"><span>★ 2026 ★</span></div>
+      <div class="ring1"></div><div class="ring2"></div>
+      <div class="pic-circle"><img src="media/pugi.jpeg" onerror="this.src='https://i.pravatar.cc/400?img=12'"></div>
+      <div class="badge-jo">J.O</div>
+    </div>
+
+    <div class="name-wrap"><h1>Jetric <span>Obrique</span></h1></div>
+    <h2 class="typed" id="typed"></h2>
+
+    <div class="chips">
+      <div class="chip">🎓 BSIS 2RD YEAR</div><div class="chip red">💻 WEB DEV</div>
+      <div class="chip">🐦 CROWS</div><div class="chip red">🌙 RED MOON</div>
+    </div>
+
+    <div class="btns">
+      <button class="btn btn-gold" onclick="location.href='gallery.html'"><span>◍ GALLERY ↗</span></button>
+      <button class="btn btn-line" onclick="location.href='contact.html'"><span>✉ MESSAGE</span></button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>UA</b><span>STUDENT</span></div><div class="stat"><b>RED</b><span>MOON</span></div><div class="stat"><b>100%</b><span>DEDICATED</span></div>
+    </div>
+
+    <div class="about" onclick="this.classList.toggle('active')">
+      <div class="about-head"><b>👤 ABOUT ME</b></div>
+      <div class="about-text">I'm <b style="color:#fff;">Jetric Obrique</b>, from SEBASTE, ANTIQUE 2nd year BSIS Student.<br><br>I enjuy coding, designing, and creating websites. my goal is to become a professional web developer and help small businesess with their online presence. still learning but always improving.</div>
+      <div class="about-more">
+        <div class="row"><span>Course:</span><b>BSIS</b></div><div class="row"><span>School:</span><b>UA Tibiao</b></div><div class="row"><span>Goal:</span><b>Full-Stack Developer</b></div><div class="row"><span>Location:</span><b>Tibiao, Antique</b></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom"><div class="pill">
+    <a class="active" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 10L12 3l9 7v10H15v-6H9v6H3z"/></svg>HOME</a>
+    <a href="gallery.html"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>PHOTO</a>
+    <a href="skills.html"><svg viewBox="0 0 24 24"><path d="M12 2l2.5 5.5L21 12l-6.5 4.5L12 22l-2.5-5.5L3 12l6.5-4.5L12 2z"/></svg>SKILLS</a>
+    <a href="goals.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2.5"/></svg>GOALS</a>
+    <a href="funfacts.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M8 13c1.2 1.5 3.8 1.5 5 0"/><circle cx="9" cy="9" r=".8" fill="white" stroke="none"/><circle cx="15" cy="9" r=".8" fill="white" stroke="none"/></svg>FUN</a>
+    <a href="contact.html"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 19c0-2.5 2.2-4.5 6-4.5s6 2 6 4.5"/></svg>CONTACT</a>
+  </div></div>
+
+  <script>
+    const roles=[" BSIS STUDENT • WEB DEV"," UNIVERSITY OF ANTIQUE • 2026"," RED MOON • ITACHI • CROWS"];
+    let ri=0,ci=0,del=false;const el=document.getElementById('typed');
+    function type(){const cur=roles[ri];if(!del){el.textContent=cur.substring(0,ci+1);ci++;if(ci===cur.length){setTimeout(()=>{del=true;type();},1800);return;}}else{el.textContent=cur.substring(0,ci-1);ci--;if(ci===0){del=false;ri=(ri+1)%roles.length;}}setTimeout(type,del?30:70);}type();
+  </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Goals - Scrollable Red Moon</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:auto; min-height:100vh; }
+body { 
+  background:#000; 
+  font-family:'Inter',sans-serif;
+  overflow-y:auto; /* SCROLLABLE NA */
+  overflow-x:hidden;
+}
+
+/* RED MOON BACKGROUND TULAD SA SKILLS AT CONTACT */
+.red-moon-bg {
+  position: fixed;
+  top:0; left:0; width:100%; height:100%;
+  z-index:-2;
+  background-image:  url('media/red-moon.jpeg');
+  background-size:cover;
+  background-position:center top;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  filter:brightness(0.7) contrast(1.1);
+}
+.overlay {
+  position:fixed; inset:0; z-index:-1;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.85) 100%),
+    radial-gradient(ellipse at 50% 30%, rgba(255,0,51,0.18), transparent 60%);
+  pointer-events:none;
+}
+
+.sec { 
+  padding-bottom:110px; 
+  max-width:400px; 
+  margin:0 auto; 
+  position:relative; 
+  z-index:2;
+  padding-left:16px;
+  padding-right:16px;
+}
+
+.sec-header {
+  text-align:center;
+  padding:24px 0 16px;
+}
+.sec-header h2 { color:#fff; font-family:'Space Grotesk'; font-size:24px; font-weight:800; }
+.sec-header h2 span { color:#ff0033; text-shadow:0 0 15px #ff0033; }
+.sec-header p { font-size:7px; color:#ffcccc; letter-spacing:3px; margin-top:6px; }
+
+.timeline {
+  position:relative;
+  padding-left:22px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  padding-bottom:20px;
+}
+.timeline::before {
+  content:''; position:absolute; left:6px; top:0; bottom:0; width:2px;
+  background:linear-gradient(to bottom, #ff0033, #ff6600, #ff0033);
+  box-shadow:0 0 12px #ff0033;
+}
+
+/* GOAL ITEM - SCROLLABLE - DI NAWAWALA */
+.goal-item {
+  position:relative;
+  background:rgba(15,10,12,0.88);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,0,51,0.2);
+  border-left:3px solid #ff0033;
+  padding:14px 14px 13px;
+  width:100%;
+  border-radius:12px;
+  cursor:pointer;
+  opacity:0;
+  transform:translateY(20px);
+  animation:goalIn 0.6s ease forwards, chakra 4s ease-in-out infinite;
+  transition:0.35s ease;
+  will-change:transform;
+}
+.goal-item:nth-child(1){ animation-delay:0.08s, 0s; }
+.goal-item:nth-child(2){ animation-delay:0.16s, 0.5s; }
+.goal-item:nth-child(3){ animation-delay:0.24s, 1s; }
+.goal-item:nth-child(4){ animation-delay:0.32s, 1.5s; }
+.goal-item:nth-child(5){ animation-delay:0.40s, 2s; }
+.goal-item:nth-child(6){ animation-delay:0.48s, 2.5s; }
+
+@keyframes goalIn { to{ opacity:1; transform:translateY(0); } }
+@keyframes chakra { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.4), 0 0 12px rgba(255,0,51,0.15); } }
+
+.goal-item:hover { transform:translateX(5px) scale(1.01); background:rgba(30,12,16,0.96); box-shadow:0 0 20px rgba(255,0,51,0.3); }
+.goal-item.active { background:rgba(40,14,18,0.98); border-left-width:4px; box-shadow:0 0 25px rgba(255,0,51,0.4); animation:goalIn 0.6s ease forwards; transform:translateX(5px) scale(1.01); }
+.goal-item::before { content:''; position:absolute; left:-20px; top:18px; width:9px; height:9px; border-radius:50%; background:#ff0033; box-shadow:0 0 10px #ff0033, 0 0 20px #ff0033; border:2px solid #000; }
+
+.goal-year { font-size:7px; color:#ff0033; font-weight:800; letter-spacing:1.5px; display:flex; gap:6px; align-items:center; }
+.dot { width:5px; height:5px; background:#ff0033; border-radius:50%; animation:blink 1.2s infinite; box-shadow:0 0 6px #ff0033; }
+@keyframes blink { 50%{opacity:0.3} }
+.goal-item b { font-size:12px; color:#fff; display:block; margin:6px 0 4px; font-family:'Space Grotesk'; line-height:1.3; }
+.goal-item p { font-size:8.5px; color:#ffffff70; line-height:1.5; }
+
+.goal-detail { max-height:0; opacity:0; overflow:hidden; transition:0.45s cubic-bezier(0.34,1.56,0.64,1); }
+.goal-item.active .goal-detail { max-height:160px; opacity:1; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,0,51,0.2); }
+.detail-row { display:flex; justify-content:space-between; font-size:7.5px; margin-bottom:4px; color:#ffffff80; }
+.detail-row span:last-child{ color:#ff2d55; font-weight:800; }
+.mini-bar { height:4px; background:#222; border-radius:10px; margin-top:8px; overflow:hidden; }
+.mini-fill { height:100%; background:linear-gradient(90deg,#ff0033,#ff8800); width:0; transition:1.2s ease 0.2s; box-shadow:0 0 8px rgba(255,0,51,0.5); }
+.goal-item.active .mini-fill { width:var(--w); }
+
+.bottom-wrap { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); z-index:9999; width:92%; max-width:360px; }
+.bottom-pill { width:100%; height:58px; background:rgba(12,0,0,0.96); border:1px solid rgba(255,0,51,0.3); border-radius:30px; display:flex; justify-content:space-around; align-items:center; backdrop-filter:blur(16px); box-shadow:0 0 30px rgba(255,0,51,0.2); }
+.bottom-pill a { display:flex; flex-direction:column; align-items:center; gap:3px; text-decoration:none; color:#ffffff55; font-size:7px; font-weight:800; width:48px; transition:0.3s; }
+.bottom-pill a svg { width:20px; height:20px; stroke:#ffffff80; fill:none; stroke-width:1.7; }
+.bottom-pill a.active { color:#ff2d55; transform:translateY(-4px) scale(1.15); }
+.bottom-pill a.active svg { stroke:#ff2d55; filter:drop-shadow(0 0 10px #ff2d55); }
+.bottom-pill a.active::after { content:''; position:absolute; bottom:-6px; width:5px; height:5px; background:#ff2d55; border-radius:50%; box-shadow:0 0 8px #ff2d55; }
+</style>
+</head>
+<body>
+
+<div class="red-moon-bg"></div>
+<div class="overlay"></div>
+
+<nav style="background:rgba(0,0,0,0.4); backdrop-filter:blur(10px); border-bottom:1px solid rgba(255,0,51,.2); padding:14px 20px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100;">
+  <div class="logo" style="font-family:'Space Grotesk'; font-weight:800; color:#fff;">MY<b style="color:#ff0033;">.WEBSITE</b></div>
+  <button class="nav-logout" style="background:rgba(255,0,51,0.1); border:1.5px solid #ff0033; color:#ff0033; padding:6px 16px; border-radius:20px; font-size:9px; font-weight:900;" onclick="logout()"><span>EXIT</span></button>
+</nav>
+
+<div class="sec">
+  <div class="sec-header">
+    <h2>My <span>Goals</span></h2>
+    <p>" SCROLLABLE • TAP TO EXPAND" ◍</p>
+  </div>
+
+  <div class="timeline">
+    <div class="goal-item" style="--w:85%" onclick="toggleGoal(this)">
+      <div class="goal-year"><span class="dot"></span> 2026 • EDUCATION</div>
+      <b>🎓 Graduate BSIS at UALMC</b>
+      <p>Complete my Bachelor of Science in Information Systems degree and achieve academic excellence in final year.</p>
+      <div class="goal-detail">
+        <div class="detail-row"><span>Progress:</span><span>85% Completed</span></div>
+        <div class="detail-row"><span>University:</span><span>UA Tibiao Campus</span></div>
+        <div class="detail-row"><span>Year Level:</span><span>4th Year - Graduating</span></div>
+        <div class="detail-row"><span>Course:</span><span>BS Information Systems</span></div>
+        <div class="mini-bar"><div class="mini-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="goal-item" style="--w:90%" onclick="toggleGoal(this)">
+      <div class="goal-year"><span class="dot"></span> SKILL • DEVELOPMENT</div>
+      <b>💻 Master Frontend Web Development</b>
+      <p>Become highly skilled in modern web technologies and build professional, responsive websites.</p>
+      <div class="goal-detail">
+        <div class="detail-row"><span>HTML:</span><span>90% Mastered ✅</span></div>
+        <div class="detail-row"><span>CSS:</span><span>85% Expert ✅</span></div>
+        <div class="detail-row"><span>JavaScript:</span><span>70% Advanced 🔥</span></div>
+        <div class="detail-row"><span>Goal:</span><span>Full-stack Developer</span></div>
+        <div class="mini-bar"><div class="mini-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="goal-item" style="--w:40%" onclick="toggleGoal(this)">
+      <div class="goal-year"><span class="dot"></span> CAREER • INCOME</div>
+      <b>💰 Earn 5,000 Pesos Monthly Online</b>
+      <p>Generate stable income through freelance web design and online opportunities while studying.</p>
+      <div class="goal-detail">
+        <div class="detail-row"><span>Current Income:</span><span>₱1,200 / month</span></div>
+        <div class="detail-row"><span>Target Income:</span><span>₱5,000 / month</span></div>
+        <div class="detail-row"><span>Source:</span><span>Freelance Web Design</span></div>
+        <div class="detail-row"><span>Status:</span><span>Growing 📈</span></div>
+        <div class="mini-bar"><div class="mini-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="goal-item" style="--w:60%" onclick="toggleGoal(this)">
+      <div class="goal-year"><span class="dot"></span> FAMILY • LOVE</div>
+      <b>🏠 Support My Family and Build Better Home</b>
+      <p>Provide better life for Mama and Papa - they are my inspiration and number one priority.</p>
+      <div class="goal-detail">
+        <div class="detail-row"><span>Dream:</span><span>Comfortable Family Home</span></div>
+        <div class="detail-row"><span>Priority:</span><span>#1 - Family First ❤️</span></div>
+        <div class="detail-row"><span>Mission:</span><span>Make Parents Proud</span></div>
+        <div class="detail-row"><span>Motivation:</span><span>Love & Gratitude</span></div>
+        <div class="mini-bar"><div class="mini-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="goal-item" style="--w:25%" onclick="toggleGoal(this)">
+      <div class="goal-year"><span class="dot"></span> FUTURE • 2027</div>
+      <b>🚀 Secure Stable IT Job in the City</b>
+      <p>Launch my professional IT career in the city with good salary after graduation.</p>
+      <div class="goal-detail">
+        <div class="detail-row"><span>Plan:</span><span>IT Job in the City</span></div>
+        <div class="detail-row"><span>Salary Goal:</span><span>₱20,000+ Monthly</span></div>
+        <div class="detail-row"><span>Timeline:</span><span>After Graduation 2027</span></div>
+        <div class="detail-row"><span>Location:</span><span>Iloilo / Manila City</span></div>
+        <div class="mini-bar"><div class="mini-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="goal-item" style="--w:50%" onclick="toggleGoal(this)">
+      <div class="goal-year"><span class="dot"></span> PERSONAL • GROWTH</div>
+      <b>🌟 Continuous Learning and Self Improvement</b>
+      <p>Never stop learning new technologies and improving myself as a person and professional.</p>
+      <div class="goal-detail">
+        <div class="detail-row"><span>Mindset:</span><span>Growth Mindset 🌱</span></div>
+        <div class="detail-row"><span>Learning:</span><span>Everyday New Skills</span></div>
+        <div class="detail-row"><span>Goal:</span><span>Best Version of Myself</span></div>
+        <div class="mini-bar"><div class="mini-fill"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-wrap"><div class="bottom-pill">
+  <a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 10L12 3l9 7v10H15v-6H9v6H3z"/></svg>HOME</a>
+  <a href="gallery.html"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>PHOTO</a>
+  <a href="skills.html"><svg viewBox="0 0 24 24"><path d="M12 2l2.5 5.5L21 12l-6.5 4.5L12 22l-2.5-5.5L3 12l6.5-4.5L12 2z"/></svg>SKILLS</a>
+  <a class="active" href="goals.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2.5"/></svg>GOALS</a>
+  <a href="funfacts.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M8 13c1.2 1.5 3.8 1.5 5 0"/><circle cx="9" cy="9" r=".8" fill="white" stroke="none"/><circle cx="15" cy="9" r=".8" fill="white" stroke="none"/></svg>FUN</a>
+  <a href="contact.html"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 19c0-2.5 2.2-4.5 6-4.5s6 2 6 4.5"/></svg>CONTACT</a>
+</div></div>
+
+<script>
+function toggleGoal(el){
+  if(el.classList.contains('active')){
+    el.classList.remove('active');
+  } else {
+    // DI NAWAWALA IBA - KITA PARIN LAHAT
+    document.querySelectorAll('.goal-item').forEach(g=>g.classList.remove('active'));
+    el.classList.add('active');
+    if(navigator.vibrate) navigator.vibrate(15);
+    // Auto scroll sa goal na tinap
+    setTimeout(()=>{ el.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
+  }
+}
+function logout(){ localStorage.removeItem('blue_logged'); location.href='login.html'; }
+</script>
+</body>
+</html>

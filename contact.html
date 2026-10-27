@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact - Red Moon</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+  body { margin:0; background:#000; overflow-x:hidden; }
+  .red-moon-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+    background-image: url('media/red-moon.jpeg');
+    background-size: cover;
+    background-position: center;
+    animation: bgMove 30s ease-in-out infinite alternate;
+  }
+  @keyframes bgMove { 0%{transform:scale(1)} 100%{transform:scale(1.12)} }
+  .overlay { position:fixed; inset:0; z-index:-2; background:rgba(0,0,0,0.4); }
+
+  .sec { max-width:400px; margin:0 auto; padding:16px; position:relative; z-index:2; padding-bottom:110px; }
+  .title { text-align:center; font-size:28px; font-weight:900; letter-spacing:1px; color:#fff; text-shadow:0 2px 10px #000; }
+  .title span { color:#ff0033; text-shadow:0 0 20px rgba(255,0,51,0.8); animation:glow 2s infinite; }
+  @keyframes glow { 0%,100%{text-shadow:0 0 15px #ff0033} 50%{text-shadow:0 0 30px #ff0033, 0 0 50px #ff0033} }
+  .typing { text-align:center; font-size:8px; color:#ffcccc; letter-spacing:3px; margin:6px 0; height:14px; text-shadow:0 1px 4px #000; }
+  .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0; }
+  .info-card { text-align:center; padding:14px; background:rgba(15,8,10,0.85); border:1px solid rgba(255,0,51,0.25); border-radius:14px; position:relative; animation:floatCard 3s ease-in-out infinite; transition:0.4s; backdrop-filter:blur(2px); }
+  .info-card:nth-child(2){ animation-delay:.5s; }
+  @keyframes floatCard { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+  .info-card:hover { transform:translateY(-5px) scale(1.03); border-color:#ff0033; box-shadow:0 10px 25px rgba(255,0,51,0.3); }
+  .info-card .ic { font-size:22px; animation:iconBounce 2s infinite; }
+  @keyframes iconBounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+  .info-card b { display:block; font-size:11px; margin-top:4px; color:#fff; }
+  .info-card p { font-size:7px; color:#ff0033; letter-spacing:1.5px; margin-top:2px; }
+  .form-card { background:rgba(15,15,15,0.88); border:1px solid rgba(255,0,51,0.2); border-radius:16px; padding:16px; position:relative; overflow:hidden; animation:cardIn 0.8s cubic-bezier(0.34,1.56,0.64,1); backdrop-filter:blur(6px); }
+  @keyframes cardIn { from{transform:translateY(30px) scale(0.9); opacity:0} to{transform:translateY(0) scale(1); opacity:1} }
+  .form-card h4 { font-family:'Space Grotesk'; font-size:12px; letter-spacing:2px; color:#ff0033; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+  .form-card h4:after { content:''; width:0; height:2px; background:#ff0033; animation:lineGrow 1s ease 0.5s forwards; }
+  @keyframes lineGrow { to{width:40px} }
+  .inp-wrap { position:relative; margin:10px 0; }
+  .inp-wrap input, .inp-wrap textarea { width:100%; padding:13px 12px; border:1px solid rgba(255,0,51,0.2); background:rgba(0,0,0,0.6); color:#fff; border-radius:10px; border-left:3px solid #ff0033; outline:none; transition:0.3s; font-size:12px; }
+  .inp-wrap input:focus, .inp-wrap textarea:focus { border-color:#ff0033; background:rgba(255,0,51,0.08); box-shadow:0 0 15px rgba(255,0,51,0.2); transform:translateX(3px); }
+  .inp-wrap label { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:10px; color:#666; pointer-events:none; transition:0.3s; background:rgba(15,15,15,0.9); padding:0 4px; }
+  .inp-wrap input:focus + label, .inp-wrap input:not(:placeholder-shown) + label { top:0; font-size:7px; color:#ff0033; letter-spacing:1px; }
+  .inp-wrap textarea { height:80px; resize:none; }
+  .inp-wrap textarea + label { top:14px; transform:none; }
+  .inp-wrap textarea:focus + label, .inp-wrap textarea:not(:placeholder-shown) + label { top:-6px; font-size:7px; color:#ff0033; }
+  .btn-ultra { width:100%; margin-top:14px; padding:14px; background:linear-gradient(135deg,#ff0033,#cc0029); border:none; border-radius:12px; color:#fff; font-weight:900; letter-spacing:2px; font-size:11px; position:relative; overflow:hidden; cursor:pointer; transition:0.4s; box-shadow:0 0 20px rgba(255,0,51,0.3); }
+  .btn-ultra:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(255,0,51,0.5); }
+  .btn-ultra:active { transform:scale(0.97); }
+  .social { display:flex; gap:8px; margin-top:12px; justify-content:center; }
+  .social a { width:38px; height:38px; display:grid; place-items:center; background:rgba(255,0,51,0.1); border:1px solid rgba(255,0,51,0.2); border-radius:10px; color:#ff0033; transition:0.3s; text-decoration:none; }
+  .social a:hover { background:#ff0033; color:#000; transform:translateY(-3px) rotate(5deg); box-shadow:0 5px 15px rgba(255,0,51,0.4); }
+
+  .bottom-wrap { position:fixed; bottom:10px; left:50%; transform:translateX(-50%); z-index:9999; width:92%; max-width:360px; }
+  .bottom-pill { width:100%; height:58px; background:rgba(14,14,16,0.96); border:1px solid rgba(255,0,51,0.3); border-radius:30px; display:flex; justify-content:space-around; align-items:center; backdrop-filter:blur(14px); }
+  .bottom-pill a { display:flex; flex-direction:column; align-items:center; gap:3px; text-decoration:none; color:#ffffff55; font-size:7px; font-weight:800; width:48px; }
+  .bottom-pill a svg { width:20px; height:20px; stroke:#ffffff80; fill:none; stroke-width:1.7; }
+  .bottom-pill a.active { color:#ff2d55; }
+  .bottom-pill a.active svg { stroke:#ff2d55; filter:drop-shadow(0 0 6px #ff2d55); }
+</style>
+</head>
+<body>
+
+<div class="red-moon-bg"></div>
+<div class="overlay"></div>
+
+<nav style="background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,0,51,.2)">
+<div class="logo">MY<b>.WEBSITE</b></div>
+<button class="nav-logout" onclick="logout()"><span>EXIT</span></button>
+</nav>
+
+<div class="sec">
+<h2 class="title">Contact <span>Me</span></h2>
+<div class="typing" id="typing"></div>
+
+<div class="info-grid">
+<div class="info-card"><div class="ic">📍</div><p>LOCATION</p><b>Sebaste, Antique</b></div>
+<div class="info-card"><div class="ic">⚡</div><p>RESPONSE</p><b>24hrs Fast Reply</b></div>
+</div>
+
+<div class="form-card">
+<h4>> SEND_MESSAGE_SIGNAL</h4>
+<div class="inp-wrap"><input id="cName" placeholder=" " /><label>Your Name</label></div>
+<div class="inp-wrap"><input id="cEmail" placeholder=" " /><label>Your Email</label></div>
+<div class="inp-wrap"><textarea id="cMsg" placeholder=" "></textarea><label>Your Message...</label></div>
+<button class="btn-ultra" onclick="sendMsg()"><span>🚀 SEND MESSAGE →</span></button>
+<div class="social"><a href="#">📘</a><a href="#">📸</a><a href="#">💀</a></div>
+</div>
+</div>
+
+<div class="bottom-wrap"><div class="bottom-pill"><a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 10L12 3l9 7v10H15v-6H9v6H3z"/></svg>HOME</a><a href="gallery.html"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>PHOTO</a><a href="skills.html"><svg viewBox="0 0 24 24"><path d="M12 2l2.5 5.5L21 12l-6.5 4.5L12 22l-2.5-5.5L3 12l6.5-4.5L12 2z"/></svg>SKILLS</a><a href="goals.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2.5"/></svg>GOALS</a><a href="funfacts.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M8 13c1.2 1.5 3.8 1.5 5 0"/><circle cx="9" cy="9" r=".8" fill="white" stroke="none"/><circle cx="15" cy="9" r=".8" fill="white" stroke="none"/></svg>FUN</a><a class="active" href="contact.html"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 19c0-2.5 2.2-4.5 6-4.5s6 2 6 4.5"/></svg>CONTACT</a></div></div>
+
+<script>
+ const text="LET'S TRY TO SUMBET YOUR MESSAGE"; let i=0;
+ function type(){ if(i<text.length){ document.getElementById('typing').innerText=text.substring(0,i+1)+'|'; i++; setTimeout(type,50); } else{ document.getElementById('typing').innerText=text; } }
+ type();
+ function sendMsg(){
+   const n=document.getElementById('cName').value.trim();
+   const e=document.getElementById('cEmail').value.trim();
+   const m=document.getElementById('cMsg').value.trim();
+   if(!n||!e||!m){ if(navigator.vibrate) navigator.vibrate([40,40,40]); alert('Fill all fields boss! ⚡'); return; }
+   const btn=document.querySelector('.btn-ultra'); btn.innerHTML='💥 SENT! CHECKING SIGNAL...'; btn.style.background='linear-gradient(135deg,#ffd700,#ff8c00)';
+   setTimeout(()=>{ alert('Sent Message! 💀🔥 Message received!'); document.getElementById('cName').value=''; document.getElementById('cEmail').value=''; document.getElementById('cMsg').value=''; btn.innerHTML='<span>🚀 SEND ULTRA →</span>'; btn.style.background=''; },1200);
+ }
+ function logout(){ localStorage.removeItem('blue_logged'); location.href='login.html'; }
+</script>
+</body>
+</html>

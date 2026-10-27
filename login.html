@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Itachi - Colorful Login</title>
+<link rel="stylesheet" href="login_style.css">
+</head>
+<body>
+  <div class="itachi-bg-wrap">
+    <div class="itachi-bg"></div>
+    <div class="red-fog"></div>
+    <div class="red-fog fog2"></div>
+    <div class="crow-anim">🐦‍⬛</div>
+    <div class="crow-anim c2">🐦‍⬛</div>
+    <div class="crow-anim c3">🐦‍⬛</div>
+    <div class="embers" id="embers"></div>
+  </div>
+
+  <div class="login-box-style">
+    <div class="eye-top-wrap" id="eyeWrap" onclick="activateEye()">
+      <div class="eye-outer-glow"></div>
+      <div class="eye-outer-glow glow2"></div>
+      <div class="eye-main" id="eyeMain">
+        <div class="eye-white"></div>
+        <div class="iris" id="iris">
+          <div class="iris-gradient"></div>
+          <div class="tomoe-container" id="tomoeContainer">
+            <div class="tomoe t1"></div>
+            <div class="tomoe t2"></div>
+            <div class="tomoe t3"></div>
+          </div>
+          <div class="pupil"></div>
+          <div class="light-reflect"></div>
+        </div>
+      </div>
+    </div>
+
+    <h1 id="title"><span class="title-grad">Login</span></h1>
+  
+    <div id="loginForm">
+      <div class="pill-input"><input id="username" type="text" placeholder="Username"></div>
+      <div class="pill-input"><input id="password" type="password" placeholder="Password"></div>
+      <label class="show-pass"><input type="checkbox" id="showCheck" onclick="togglePass()"> <span>Show Password</span></label>
+      <div id="err" class="err"></div>
+      <button class="pill-btn" onclick="doLogin()"><span class="btn-text">LOGIN</span></button>
+      <p class="bottom-link">Don't have an account? <span onclick="switchToSignup()">Sign Up</span></p>
+    </div>
+
+    <div id="signupForm" style="display:none">
+      <div class="pill-input"><input id="su_user" type="text" placeholder="Create Username"></div>
+      <div class="pill-input"><input id="su_pass" type="password" placeholder="Create Password"></div>
+      <label class="show-pass"><input type="checkbox" onclick="togglePass2()"> <span>Show Password</span></label>
+      <div id="regErr" class="err"></div>
+      <button class="pill-btn signup-color" onclick="doRegister()"><span class="btn-text">SIGN UP</span></button>
+      <p class="bottom-link">Already have an account? <span onclick="switchToLogin()">Login</span></p>
+    </div>
+  </div>
+
+<script>
+  const embersBox = document.getElementById('embers');
+  for(let i=0;i<22;i++){const e=document.createElement('div'); e.className='ember'; e.style.left=Math.random()*100+'%'; e.style.animationDelay=Math.random()*8+'s'; e.style.animationDuration=(4+Math.random()*5)+'s'; embersBox.appendChild(e);}
+  function activateEye(){
+    const eye=document.getElementById('eyeMain'), tomoe=document.getElementById('tomoeContainer'), wrap=document.getElementById('eyeWrap');
+    wrap.classList.add('active'); eye.classList.add('power'); tomoe.style.animationDuration='0.3s';
+    const flash=document.createElement('div'); flash.className='genjutsu-flash'; document.body.appendChild(flash); setTimeout(()=>flash.remove(),700);
+    if(navigator.vibrate) navigator.vibrate([30,20,60]); document.body.style.filter='brightness(1.2)';
+    setTimeout(()=>{wrap.classList.remove('active'); eye.classList.remove('power'); tomoe.style.animationDuration='4s'; document.body.style.filter='brightness(1)';},1500);
+  }
+  setInterval(()=>{const eye=document.getElementById('eyeMain'); eye.style.transform='scaleY(0.08)'; setTimeout(()=>eye.style.transform='scaleY(1)',140);},3800);
+  function togglePass(){const p=document.getElementById('password'); const c=document.getElementById('showCheck'); p.type=c.checked?'text':'password';}
+  function togglePass2(){const p=document.getElementById('su_pass'); p.type=p.type==='password'?'text':'password';}
+  function hasAcc(){return localStorage.getItem('registeredUser')!==null}
+  function switchToSignup(){loginForm.style.display='none';signupForm.style.display='block';title.innerHTML='<span class="title-grad signup-grad">Sign Up</span>'; activateEye();}
+  function switchToLogin(){signupForm.style.display='none';loginForm.style.display='block';title.innerHTML='<span class="title-grad">Login</span>'; activateEye();}
+  function doRegister(){const u=su_user.value.trim(),p=su_pass.value.trim(),err=regErr;if(u.length<3||p.length<3){err.style.display='block';err.innerText='Min 3 chars!';return}localStorage.setItem('registeredUser',JSON.stringify({username:u,password:p}));localStorage.setItem('isRegistered','true');err.style.display='block';err.style.color='#4eff88';err.innerText='Mangekyou Unlocked! '+u+' ✓'; activateEye(); setTimeout(()=>{username.value=u;switchToLogin();},800);}
+  function doLogin(){const u=username.value.trim(),p=password.value.trim(),err=document.getElementById('err');if(!hasAcc()){err.style.display='block';err.innerText='No account! Sign Up!';setTimeout(switchToSignup,700);return}const s=JSON.parse(localStorage.getItem('registeredUser'));if(u!==s.username||p!==s.password){err.style.display='block';err.innerText='your password is wrong or user name! User: '+s.username;document.querySelector('.login-box-style').style.animation='shake 0.4s ease';setTimeout(()=>document.querySelector('.login-box-style').style.animation='',400); activateEye(); return}localStorage.setItem('logged','true');document.querySelector('#loginForm .pill-btn').innerHTML='<span class="btn-text">SUCCESSFULL...</span>'; activateEye(); setTimeout(()=>location.href='index.html',800);}
+  if(localStorage.getItem('logged')==='true')location.href='index.html';if(!localStorage.getItem('isRegistered'))setTimeout(switchToSignup,500);
+  document.querySelectorAll('.pill-input input').forEach(inp=>{
+    inp.addEventListener('focus',()=>{inp.parentElement.classList.add('focused');});
+    inp.addEventListener('blur',()=>{inp.parentElement.classList.remove('focused');});
+    inp.addEventListener('input',()=>{inp.parentElement.classList.add('has-text');});
+  });
+</script>
+</body>
+</html>
