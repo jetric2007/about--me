@@ -1,6 +1,6 @@
 <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <title>Fun Facts - Red Moon</title> <link rel="stylesheet" href="style.css" /> <style> 
 body { margin:0; background:#000; overflow-x:hidden; } 
-.red-moon-bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -3; background-image: url('media/red-moon.jpeg'); background-size: cover; background-position: center; animation: bgMove 30s ease-in-out infinite alternate; } 
+.red-moon-bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -3; background-image: url('red-moon.jpeg'); background-size: cover; background-position: center; animation: bgMove 30s ease-in-out infinite alternate; } 
 @keyframes bgMove { 0%{transform:scale(1)} 100%{transform:scale(1.12)} } 
 .overlay { position:fixed; inset:0; z-index:-2; background:rgba(0,0,0,0.35); } 
 .sec { max-width:400px; margin:0 auto; padding:16px; padding-bottom:110px; position:relative; z-index:2; } 
@@ -82,44 +82,44 @@ body { margin:0; background:#000; overflow-x:hidden; }
 <!-- MUSIC MODAL -->
 <div class="music-modal" id="musicModal"> <div class="modal-top-bar"> <button class="back-btn" onclick="closeMusicBox()">‹</button> <div class="music-label">♪ MY FAVORITE MUSIC</div> <div style="width:20px;"></div> </div> 
 <div class="djbox-mini"> <div class="stars-mini" id="starsMini"></div> <div class="favorite-tag">❤️ FAVORITE</div> 
-<div class="dj-left-mini"> <img src="media/flower-real.jpeg" class="flower-rotate" id="flowerReal"> </div> 
+<div class="dj-left-mini"> <img src="flower-real.jpeg" class="flower-rotate" id="flowerReal"> </div> 
 <div class="dj-right-mini"> <div class="equalizer-mini" id="equalizer"></div> <div class="dj-title-mini">Sino</div> <div class="dj-title2-mini">BY. SANTALA</div> </div> 
 <div class="aspectrum-mini"> <div class="a-icon">♪</div> <div><div style="font-size:6px; opacity:0.6;">Made with</div><b>Aspectrum</b></div> </div> 
 <div class="music-controls-mini"> <button onclick="toggleMusic()" id="playBtn">⏸️</button> <button onclick="closeMusicBox()">✕</button> </div> </div> 
-<audio id="audioPlayer" loop src="media/soundcheck.mp3" preload="auto"></audio> </div> 
+<audio id="audioPlayer" loop src="soundcheck.mp3" preload="auto"></audio> </div> 
 
 <!-- GAME MODAL -->
 <div class="game-modal" id="gameModal"> <div class="modal-top-bar"> <button class="back-btn" onclick="closeGameBox()">‹</button> <div class="music-label">🎮 MY GAMEPLAY</div> <div style="width:20px;"></div> </div> 
 <div class="game-box-mini"> <div class="game-tag">🎮 MLBB </div> 
-<video id="gameVideo" class="game-video" src="media/ml-intro.mp4" loop playsinline controls></video> 
+<video id="gameVideo" class="game-video" src="ml-intro.mp4" loop playsinline controls></video> 
 <div class="game-info"> <div class="dj-title-mini" style="color:#ffcc00;">MOBILE LEGENDS</div> <div class="dj-title2-mini"> MY FAV ONLINE GAME </div> 
 <div class="music-controls-mini"> <button onclick="toggleGameVideo()" id="gamePlayBtn">⏸️</button> <button onclick="closeGameBox()">✕</button> </div> </div> </div> </div> 
 
 <!-- K-DRAMA MODAL -->
 <div class="game-modal" id="kdramaModal"> <div class="modal-top-bar"> <button class="back-btn" onclick="closeKdramaBox()">‹</button> <div class="music-label">🎬 MY K-DRAMA</div> <div style="width:20px;"></div> </div> 
 <div class="game-box-mini"> <div class="game-tag" style="background:linear-gradient(90deg, #ff2d55, #ff8a00);">🎬 K-DRAMA FAV</div> 
-<video id="kdramaVideo" class="game-video" src="media/kdrama.mp4" loop playsinline controls></video> 
+<video id="kdramaVideo" class="game-video" src="kdrama.mp4" loop playsinline controls></video> 
 <div class="game-info"> <div class="dj-title-mini" style="color:#ff2d55;">TWINKLING WATERMELON</div> <div class="dj-title2-mini">FAVORITE SCENE</div> 
 <div class="music-controls-mini"> <button onclick="toggleKdramaVideo()" id="kdramaPlayBtn">⏸️</button> <button onclick="closeKdramaBox()">✕</button> </div> </div> </div> </div> 
 
 <!-- COFFEE MODAL - BAGO PA-TAYO -->
 <div class="game-modal" id="coffeeModal"> <div class="modal-top-bar"> <button class="back-btn" onclick="closeCoffeeBox()">‹</button> <div class="music-label">☕ COFFEE TIME</div> <div style="width:20px;"></div> </div> 
 <div class="game-box-mini"> <div class="game-tag" style="background:linear-gradient(90deg, #8B4513, #D2691E);">☕ COFFEE LOVER</div> 
-<video id="coffeeVideo" class="game-video" src="media/coffee.mp4" loop playsinline controls></video> 
+<video id="coffeeVideo" class="game-video" src="coffee.mp4" loop playsinline controls></video> 
 <div class="game-info"> <div class="dj-title-mini" style="color:#D2691E;"> TARA KAPE </div> <div class="dj-title2-mini">DAILY ROUTINE</div> 
 <div class="music-controls-mini"> <button onclick="toggleCoffeeVideo()" id="coffeePlayBtn">⏸️</button> <button onclick="closeCoffeeBox()">✕</button> </div> </div> </div> </div> 
 
 <!-- PUYAT MODAL - BAGO PA-TAYO -->
 <div class="game-modal" id="puyatModal"> <div class="modal-top-bar"> <button class="back-btn" onclick="closePuyatBox()">‹</button> <div class="music-label">💻 PUYAT CODER</div> <div style="width:20px;"></div> </div> 
 <div class="game-box-mini"> <div class="game-tag" style="background:linear-gradient(90deg, #00ccff, #0066ff);">💻 BSIS LIFE</div> 
-<video id="puyatVideo" class="game-video" src="media/puyat.mp4" loop playsinline controls></video> 
+<video id="puyatVideo" class="game-video" src="puyat.mp4" loop playsinline controls></video> 
 <div class="game-info"> <div class="dj-title-mini" style="color:#00ccff;">CODE GUSTO LAMBING AYAW h</div> <div class="dj-title2-mini"> CODING </div> 
 <div class="music-controls-mini"> <button onclick="togglePuyatVideo()" id="puyatPlayBtn">⏸️</button> <button onclick="closePuyatBox()">✕</button> </div> </div> </div> </div> 
   
 <!-- PANCIT MODAL - BAGO PA-TAYO -->
 <div class="game-modal" id="pancitModal"> <div class="modal-top-bar"> <button class="back-btn" onclick="closePancitBox()">‹</button> <div class="music-label">🍜 PANCIT CANTON</div> <div style="width:20px;"></div> </div> 
 <div class="game-box-mini"> <div class="game-tag" style="background:linear-gradient(90deg, #ff6600, #ffcc00);">🍜 FAVORITE FOOD</div> 
-<video id="pancitVideo" class="game-video" src="media/pancit.mp4" loop playsinline controls></video> 
+<video id="pancitVideo" class="game-video" src="pancit.mp4" loop playsinline controls></video> 
 <div class="game-info"> <div class="dj-title-mini" style="color:#ff6600;"> MY FAV CREAVINGS</div> <div class="dj-title2-mini">NOODLES FOOD</div> 
 <div class="music-controls-mini"> <button onclick="togglePancitVideo()" id="pancitPlayBtn">⏸️</button> <button onclick="closePancitBox()">✕</button> </div> </div> </div> </div> 
 
